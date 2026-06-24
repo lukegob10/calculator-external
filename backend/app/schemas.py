@@ -147,6 +147,21 @@ class ShareOut(BaseModel):
     revoked_at: datetime | None
 
 
+class AccessGrantOut(ShareOut):
+    calculation_name: str
+    calculation_owner_id: int
+    calculation_owner_name: str
+    granted_by_name: str
+
+
+class UserDetailOut(BaseModel):
+    user: UserOut
+    owned_calculations: int
+    active_grants_received: int
+    active_grants_given: int
+    recent_audit_events: list[dict[str, Any]]
+
+
 class AuditOut(BaseModel):
     id: int
     actor_user_id: int | None

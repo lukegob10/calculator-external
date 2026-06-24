@@ -31,6 +31,13 @@ The first implementation is a working vertical foundation. It is not yet the pol
 - Backend permission matrix tests.
 - Admin audit search filters.
 
+Status after the second implementation pass:
+
+- Done: admin access grant explorer API/UI.
+- Done: admin user detail API/UI with owned calculation and grant counts.
+- Done: admin-only tests for grant explorer and user detail.
+- Remaining: role-change confirmation, revoke confirmation, export-specific admin workflows, and richer audit search filters.
+
 ### Slice B - Calculation Portal Completion
 
 - Edit inputs and create new input versions from the UI.

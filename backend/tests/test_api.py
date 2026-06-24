@@ -119,3 +119,24 @@ def test_admin_can_activate_pending_user_and_publish_parameter_set():
     publish = client.post(f"/api/admin/parameter-sets/{parameter_id}/publish", headers=auth(admin_token))
     assert publish.status_code == 200
     assert publish.json()["data"]["status"] == "PUBLISHED"
+
+
+def test_admin_access_explorer_and_user_detail_are_admin_only():
+    user_token = login()
+    forbidden = client.get("/api/admin/access-grants", headers=auth(user_token))
+    assert forbidden.status_code == 403
+
+    admin_token = login("admin", "Admin123!")
+    grants = client.get("/api/admin/access-grants", headers=auth(admin_token))
+    assert grants.status_code == 200
+    grant_data = grants.json()["data"]
+    assert len(grant_data) >= 1
+    assert {"calculation_name", "calculation_owner_name", "grantee_soeid", "permission_level"}.issubset(grant_data[0].keys())
+
+    users = client.get("/api/admin/users", headers=auth(admin_token)).json()["data"]
+    luke = next(user for user in users if user["soeid"] == "lgoblirsch")
+    detail = client.get(f"/api/admin/users/{luke['id']}", headers=auth(admin_token))
+    assert detail.status_code == 200
+    body = detail.json()["data"]
+    assert body["user"]["soeid"] == "lgoblirsch"
+    assert body["owned_calculations"] >= 1

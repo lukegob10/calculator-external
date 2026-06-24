@@ -31,6 +31,7 @@ from .models import (
 )
 from .schemas import (
     APIResponse,
+    AccessGrantOut,
     AuditOut,
     CalculationCreate,
     CalculationOut,
@@ -45,6 +46,7 @@ from .schemas import (
     ShareCreate,
     ShareOut,
     UserOut,
+    UserDetailOut,
     UserUpdateRequest,
 )
 from .security import canonical_hash, hash_password, new_token, verify_password
@@ -513,6 +515,20 @@ def share_out(db: Session, grant: ShareGrant) -> ShareOut:
     )
 
 
+def access_grant_out(db: Session, grant: ShareGrant) -> AccessGrantOut:
+    base = share_out(db, grant)
+    calculation = db.get(Calculation, grant.resource_id)
+    owner = db.get(User, calculation.owner_user_id) if calculation else None
+    granted_by = db.get(User, grant.granted_by_user_id)
+    return AccessGrantOut(
+        **base.model_dump(),
+        calculation_name=calculation.name if calculation else "Unknown calculation",
+        calculation_owner_id=calculation.owner_user_id if calculation else 0,
+        calculation_owner_name=owner.full_name if owner else "Unknown owner",
+        granted_by_name=granted_by.full_name if granted_by else "Unknown grantor",
+    )
+
+
 @app.get("/api/shares")
 def list_shares(user: User = Depends(current_user), db: Session = Depends(get_db)) -> APIResponse:
     if user.role == UserRole.ADMIN.value:
@@ -523,6 +539,44 @@ def list_shares(user: User = Depends(current_user), db: Session = Depends(get_db
             select(ShareGrant).where((ShareGrant.grantee_user_id == user.id) | (ShareGrant.resource_id.in_(owned_ids))).order_by(desc(ShareGrant.created_at))
         ).all()
     return ok([share_out(db, grant).model_dump(mode="json") for grant in grants])
+
+
+@app.get("/api/admin/access-grants")
+def list_access_grants(admin: User = Depends(require_admin), db: Session = Depends(get_db)) -> APIResponse:
+    grants = db.scalars(select(ShareGrant).order_by(desc(ShareGrant.created_at))).all()
+    audit(db, admin, "admin_access_grants_viewed", "ACCESS_GRANT", None, {"count": len(grants)})
+    db.commit()
+    return ok([access_grant_out(db, grant).model_dump(mode="json") for grant in grants])
+
+
+@app.get("/api/admin/users/{user_id}")
+def user_detail(user_id: int, admin: User = Depends(require_admin), db: Session = Depends(get_db)) -> APIResponse:
+    user = db.get(User, user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found.")
+    recent_events = db.scalars(
+        select(AuditEvent).where(AuditEvent.actor_user_id == user.id).order_by(desc(AuditEvent.created_at)).limit(8)
+    ).all()
+    detail = UserDetailOut(
+        user=user_out(user),
+        owned_calculations=db.scalar(select(func.count(Calculation.id)).where(Calculation.owner_user_id == user.id)) or 0,
+        active_grants_received=db.scalar(select(func.count(ShareGrant.id)).where(ShareGrant.grantee_user_id == user.id, ShareGrant.revoked_at.is_(None))) or 0,
+        active_grants_given=db.scalar(select(func.count(ShareGrant.id)).where(ShareGrant.granted_by_user_id == user.id, ShareGrant.revoked_at.is_(None))) or 0,
+        recent_audit_events=[
+            {
+                "id": event.id,
+                "event_type": event.event_type,
+                "resource_type": event.resource_type,
+                "resource_id": event.resource_id,
+                "created_at": event.created_at.isoformat(),
+                "metadata": from_json(event.metadata_json),
+            }
+            for event in recent_events
+        ],
+    )
+    audit(db, admin, "admin_user_detail_viewed", "USER", user.id)
+    db.commit()
+    return ok(detail)
 
 
 @app.delete("/api/shares/{share_id}")

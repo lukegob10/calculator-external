@@ -27,6 +27,19 @@ type Run = {
   engine_version: string;
 };
 type Share = { id: number; resource_id: number; grantee_name: string; grantee_soeid: string; permission_level: string; revoked_at: string | null };
+type AccessGrant = Share & {
+  calculation_name: string;
+  calculation_owner_id: number;
+  calculation_owner_name: string;
+  granted_by_name: string;
+};
+type UserDetail = {
+  user: User;
+  owned_calculations: number;
+  active_grants_received: number;
+  active_grants_given: number;
+  recent_audit_events: Array<{ event_type: string; resource_type: string; resource_id: number | null; created_at: string }>;
+};
 type ParameterSet = { id: number; name: string; version: string; status: string; effective_date: string; payload: Record<string, unknown> };
 type AuditEvent = { id: number; event_type: string; resource_type: string; resource_id: number | null; metadata: Record<string, unknown>; created_at: string };
 
@@ -299,27 +312,54 @@ async function renderNewCalculation(): Promise<void> {
 }
 
 async function renderAdmin(): Promise<void> {
-  const [dashboard, users] = await Promise.all([
+  const [dashboard, users, grants] = await Promise.all([
     api<{ stats: Record<string, number> }>("/api/dashboard/admin"),
     api<User[]>("/api/admin/users"),
+    api<AccessGrant[]>("/api/admin/access-grants"),
   ]);
   const s = dashboard.stats;
+  const pending = users.filter(user => user.status === "PENDING").length;
+  const disabled = users.filter(user => user.status === "DISABLED").length;
   const content = html`
     <div class="page-head"><div><h1>Application Administration</h1><p>Approve base users, assign roles, disable accounts, and audit access.</p></div></div>
     <div class="status-strip">
       <div class="stat"><span>Active users</span><strong>${s.active_users ?? 0}</strong></div>
-      <div class="stat"><span>Pending users</span><strong>${s.pending_users ?? 0}</strong></div>
+      <div class="stat"><span>Pending users</span><strong>${pending}</strong></div>
       <div class="stat"><span>Calculations</span><strong>${s.calculations ?? 0}</strong></div>
       <div class="stat"><span>Active grants</span><strong>${s.active_grants ?? 0}</strong></div>
-      <div class="stat"><span>Published params</span><strong>${s.published_parameters ?? 0}</strong></div>
+      <div class="stat"><span>Disabled</span><strong>${disabled}</strong></div>
     </div>
-    <section class="panel"><div class="panel-head"><h2>User access queue</h2><span class="pill">Admin-only</span></div>
-      <table><thead><tr><th>User</th><th>Status</th><th>Role</th><th class="action-cell">Actions</th></tr></thead><tbody>
-        ${users.map(user => `<tr><td class="name-cell"><strong>${escapeHtml(user.full_name)}</strong><span>${escapeHtml(user.soeid)}</span></td><td>${badge(user.status)}</td><td>${badge(user.role)}</td><td class="action-cell"><div class="actions"><button class="button" data-activate="${user.id}">Activate</button><button class="button danger" data-disable="${user.id}">Disable</button></div></td></tr>`).join("")}
+    <div class="grid admin-grid">
+      <section class="panel"><div class="panel-head"><h2>User access queue</h2><span class="pill">Admin-only</span></div>
+        <table><thead><tr><th>User</th><th>Status</th><th>Role</th><th class="action-cell">Actions</th></tr></thead><tbody>
+          ${users.map(user => `<tr><td class="name-cell"><strong>${escapeHtml(user.full_name)}</strong><span>${escapeHtml(user.soeid)}</span></td><td>${badge(user.status)}</td><td>${badge(user.role)}</td><td class="action-cell"><div class="actions"><button class="button" data-user-detail="${user.id}">Inspect</button><button class="button" data-activate="${user.id}">Activate</button><button class="button danger" data-disable="${user.id}">Disable</button></div></td></tr>`).join("")}
+        </tbody></table>
+      </section>
+      <aside class="panel" id="user-detail-panel"><div class="panel-head"><h2>User detail</h2><span class="pill">Select a user</span></div>${emptyState("No user selected", "Inspect a user to see owned work, received grants, granted access, and recent audit events.")}</aside>
+    </div>
+    <section class="panel" style="margin-top:14px"><div class="panel-head"><h2>Active and historical access grants</h2><span class="pill">Global admin view</span></div>
+      <table><thead><tr><th>Calculation</th><th>Owner</th><th>Collaborator</th><th>Permission</th><th>Granted by</th><th>Status</th></tr></thead><tbody>
+        ${grants.map(grant => `<tr><td class="name-cell"><strong>${escapeHtml(grant.calculation_name)}</strong><span>Calculation ${grant.resource_id}</span></td><td>${escapeHtml(grant.calculation_owner_name)}</td><td class="name-cell"><strong>${escapeHtml(grant.grantee_name)}</strong><span>${escapeHtml(grant.grantee_soeid)}</span></td><td>${badge(grant.permission_level)}</td><td>${escapeHtml(grant.granted_by_name)}</td><td>${grant.revoked_at ? badge("Revoked") : badge("Active")}</td></tr>`).join("")}
       </tbody></table>
+      ${grants.length === 0 ? emptyState("No grants yet", "Owner-created shares and admin access grants will appear here.") : ""}
     </section>`;
   setApp(shell(content, "admin"));
   bindShell();
+  document.querySelectorAll<HTMLButtonElement>("[data-user-detail]").forEach(button => button.addEventListener("click", async () => {
+    const detail = await api<UserDetail>(`/api/admin/users/${button.dataset.userDetail}`);
+    const panel = document.querySelector<HTMLElement>("#user-detail-panel");
+    if (!panel) return;
+    panel.innerHTML = html`
+      <div class="panel-head"><h2>${escapeHtml(detail.user.full_name)}</h2>${badge(detail.user.status)}</div>
+      <div class="metric-grid compact">
+        <div class="metric"><span>Owned calculations</span><strong>${detail.owned_calculations}</strong></div>
+        <div class="metric"><span>Grants received</span><strong>${detail.active_grants_received}</strong></div>
+        <div class="metric"><span>Grants given</span><strong>${detail.active_grants_given}</strong></div>
+      </div>
+      <div class="activity">
+        ${detail.recent_audit_events.length ? detail.recent_audit_events.map(event => `<div class="activity-item"><strong>${escapeHtml(event.event_type)}</strong><span>${escapeHtml(event.resource_type)} ${escapeHtml(event.resource_id ?? "")} · ${new Date(event.created_at).toLocaleString()}</span></div>`).join("") : `<div class="notice">No recent audit events for this user.</div>`}
+      </div>`;
+  }));
   document.querySelectorAll<HTMLButtonElement>("[data-activate]").forEach(button => button.addEventListener("click", async () => {
     await api<User>(`/api/admin/users/${button.dataset.activate}`, { method: "PATCH", body: JSON.stringify({ status: "ACTIVE" }) });
     await renderAdmin();

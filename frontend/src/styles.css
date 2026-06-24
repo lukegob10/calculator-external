@@ -56,6 +56,7 @@ h1, h2, h3, h4, p { margin: 0; }
 .stat strong { display: block; margin-top: 4px; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; }
 .grid { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 14px; align-items: stretch; }
 .grid.wide { grid-template-columns: minmax(0,1fr) 300px; }
+.grid.admin-grid { grid-template-columns: minmax(0,1fr) 380px; }
 .panel { overflow: hidden; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line-soft); }
 .panel-head h2 { font-size: 14px; }
@@ -117,6 +118,7 @@ input, select { height: 38px; border: 1px solid var(--line); border-radius: 8px;
   font-size: 13px;
 }
 .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; padding: 14px; }
+.metric-grid.compact { grid-template-columns: 1fr; }
 .metric { padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
 .metric span { color: var(--muted); font-size: 12px; font-weight: 700; }
 .metric strong { display: block; margin-top: 7px; font-size: 24px; font-variant-numeric: tabular-nums; }
@@ -124,7 +126,7 @@ input, select { height: 38px; border: 1px solid var(--line); border-radius: 8px;
 @media (max-width: 1000px) {
   .app-shell { grid-template-columns: 1fr; }
   .sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
-  .grid, .auth-wrap { grid-template-columns: 1fr; }
+  .grid, .grid.admin-grid, .auth-wrap { grid-template-columns: 1fr; }
   .status-strip, .metric-grid, .form-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 @media (max-width: 640px) {
