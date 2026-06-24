@@ -8,6 +8,13 @@ type Calculation = {
   owner_user_id: number;
   asset: { identifier: string; name: string; asset_type: string };
   current_run_id: number | null;
+  latest_run: {
+    id: number;
+    status: string;
+    result: Record<string, number | string>;
+    warnings: Array<Record<string, string>>;
+    engine_version: string;
+  } | null;
   permission: string;
 };
 type Run = {
@@ -68,8 +75,17 @@ function money(value: unknown): string {
 }
 
 function pct(value: unknown): string {
+  if (value === undefined || value === null || value === "") return "-";
   const number = Number(value ?? 0);
   return `${number.toFixed(2)}%`;
+}
+
+function emptyState(title: string, body: string, action = ""): string {
+  return html`<div class="empty-state">
+    <strong>${escapeHtml(title)}</strong>
+    <span>${escapeHtml(body)}</span>
+    ${action}
+  </div>`;
 }
 
 function setApp(markup: string): void {
@@ -170,13 +186,17 @@ async function renderDashboard(): Promise<void> {
     </div>
     <section class="panel">
       <div class="panel-head"><h2>Calculation deals</h2><span class="pill">Active work</span></div>
-      <table><thead><tr><th>Deal</th><th>Asset</th><th>Status</th><th>Permission</th><th class="action-cell">Actions</th></tr></thead><tbody>
+      <table><thead><tr><th>Deal</th><th>Asset</th><th>Status</th><th class="num">External return</th><th class="num">Tax impact</th><th>Permission</th><th class="action-cell">Actions</th></tr></thead><tbody>
         ${data.calculations.map(row => html`<tr>
           <td class="name-cell"><strong>${escapeHtml(row.name)}</strong><span>${escapeHtml(row.description || "No description")}</span></td>
-          <td>${escapeHtml(row.asset.identifier)}</td><td>${badge(row.status)}</td><td>${badge(row.permission)}</td>
+          <td>${escapeHtml(row.asset.identifier)}</td><td>${badge(row.status)}</td>
+          <td class="num">${pct(row.latest_run?.result.external_return_percent)}</td>
+          <td class="num">${pct(row.latest_run?.result.tax_impact_percent)}</td>
+          <td>${badge(row.permission)}</td>
           <td class="action-cell"><div class="actions"><button class="button" data-open="${row.id}">Open</button><button class="button primary" data-run="${row.id}">Run</button></div></td>
         </tr>`).join("")}
       </tbody></table>
+      ${data.calculations.length === 0 ? emptyState("No calculations yet", "Create the first calculation to see saved work, output evidence, and sharing controls.", `<button class="button primary" data-route="calculation-new">New calculation</button>`) : ""}
     </section>`;
   setApp(shell(content, "dashboard"));
   bindShell();
@@ -194,20 +214,36 @@ async function renderCalculationDetail(id: number): Promise<void> {
   const runs = await api<Run[]>(`/api/calculations/${id}/runs`);
   const latest = runs[0];
   const metrics = latest?.result ?? {};
+  const warningMarkup = latest?.warnings.length
+    ? latest.warnings.map(w => `<div class="notice warning">${escapeHtml(w.code)}: ${escapeHtml(w.message)}</div>`).join("")
+    : latest
+      ? `<div class="notice success">No run warnings on the latest completed run.</div>`
+      : `<div class="notice">Run this calculation to generate warning and validation evidence.</div>`;
   const content = html`
-    <div class="page-head"><div><h1>${escapeHtml(calc.name)}</h1><p>${escapeHtml(calc.asset.identifier)}. Permission: ${escapeHtml(calc.permission)}.</p></div><button class="button primary" data-run="${calc.id}">Rerun</button></div>
-    <section class="panel">
-      <div class="panel-head"><h2>Output summary</h2>${badge(calc.status)}</div>
-      <div class="metric-grid">
-        <div class="metric"><span>External return</span><strong>${pct(metrics.external_return_percent)}</strong></div>
-        <div class="metric"><span>ROTCE-like return</span><strong>${pct(metrics.rotce_like_return_percent)}</strong></div>
-        <div class="metric"><span>Tax impact</span><strong>${pct(metrics.tax_impact_percent)}</strong></div>
-        <div class="metric"><span>Projected value</span><strong>${money(metrics.projected_value)}</strong></div>
-      </div>
-      <table><thead><tr><th>Run</th><th>Status</th><th>Engine</th><th>Parameter</th><th class="num">Net income</th></tr></thead><tbody>
-        ${runs.map(run => `<tr><td>RUN-${run.id}</td><td>${badge(run.status)}</td><td>${escapeHtml(run.engine_version)}</td><td>Parameter ${run.parameter_set_id}</td><td class="num">${money(run.result.net_income)}</td></tr>`).join("")}
-      </tbody></table>
-    </section>`;
+    <div class="page-head"><div><h1>${escapeHtml(calc.name)}</h1><p>${escapeHtml(calc.asset.identifier)}. Permission: ${escapeHtml(calc.permission)}.</p></div><div class="actions"><button class="button" data-route="sharing">Share</button><button class="button primary" data-run="${calc.id}">Run calculation</button></div></div>
+    <div class="grid wide">
+      <section class="panel">
+        <div class="panel-head"><h2>Output summary</h2>${badge(calc.status)}</div>
+        <div class="metric-grid">
+          <div class="metric"><span>External return</span><strong>${pct(metrics.external_return_percent)}</strong></div>
+          <div class="metric"><span>ROTCE-like return</span><strong>${pct(metrics.rotce_like_return_percent)}</strong></div>
+          <div class="metric"><span>Tax impact</span><strong>${pct(metrics.tax_impact_percent)}</strong></div>
+          <div class="metric"><span>Projected value</span><strong>${latest ? money(metrics.projected_value) : "-"}</strong></div>
+        </div>
+        ${latest ? "" : emptyState("No runs yet", "Run this calculation to generate persisted output, parameter evidence, and engine version metadata.")}
+        <table><thead><tr><th>Run</th><th>Status</th><th>Engine</th><th>Parameter</th><th class="num">Net income</th></tr></thead><tbody>
+          ${runs.map(run => `<tr><td>RUN-${run.id}</td><td>${badge(run.status)}</td><td>${escapeHtml(run.engine_version)}</td><td>Parameter ${run.parameter_set_id}</td><td class="num">${money(run.result.net_income)}</td></tr>`).join("")}
+        </tbody></table>
+      </section>
+      <aside class="rail">
+        <section class="panel"><div class="panel-head"><h2>Run provenance</h2>${badge(latest ? latest.status : "Draft")}</div><div class="activity">
+          <div class="activity-item"><strong>Parameter set</strong><span>${latest ? `Parameter ${latest.parameter_set_id}` : "Not applied yet"}</span></div>
+          <div class="activity-item"><strong>Engine version</strong><span>${escapeHtml(latest?.engine_version ?? "Not run")}</span></div>
+          <div class="activity-item"><strong>Latest run</strong><span>${latest ? `RUN-${latest.id}` : "No run history"}</span></div>
+        </div></section>
+        <section class="panel"><div class="panel-head"><h2>Warnings</h2>${badge(latest?.warnings.length ? "Review" : "Clean")}</div><div class="panel-body">${warningMarkup}</div></section>
+      </aside>
+    </div>`;
   setApp(shell(content, "dashboard"));
   bindShell();
   document.querySelector<HTMLButtonElement>("[data-run]")?.addEventListener("click", async () => {

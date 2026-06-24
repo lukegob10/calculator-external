@@ -123,6 +123,7 @@ def parameter_out(parameter: ParameterSet) -> ParameterSetOut:
 
 def calculation_out(db: Session, calculation: Calculation, user: User) -> CalculationOut:
     asset = db.get(AssetSecurity, calculation.asset_security_id)
+    latest_run = db.get(CalculationRun, calculation.current_run_id) if calculation.current_run_id else None
     return CalculationOut(
         id=calculation.id,
         name=calculation.name,
@@ -138,6 +139,13 @@ def calculation_out(db: Session, calculation: Calculation, user: User) -> Calcul
         },
         current_input_version_id=calculation.current_input_version_id,
         current_run_id=calculation.current_run_id,
+        latest_run={
+            "id": latest_run.id,
+            "status": latest_run.status,
+            "result": from_json(latest_run.result_payload_json),
+            "warnings": from_json(latest_run.warning_payload_json),
+            "engine_version": latest_run.engine_version,
+        } if latest_run else None,
         created_at=calculation.created_at,
         updated_at=calculation.updated_at,
         permission=permission_for(db, calculation, user) or "NONE",
@@ -462,6 +470,19 @@ def create_share(payload: ShareCreate, user: User = Depends(current_user), db: S
         raise HTTPException(status_code=404, detail="Active grantee user not found.")
     if grantee.id == calculation.owner_user_id:
         raise HTTPException(status_code=409, detail="Owner already has access.")
+    existing = db.scalar(
+        select(ShareGrant).where(
+            ShareGrant.resource_type == "CALCULATION",
+            ShareGrant.resource_id == calculation.id,
+            ShareGrant.grantee_user_id == grantee.id,
+            ShareGrant.revoked_at.is_(None),
+        )
+    )
+    if existing is not None:
+        existing.permission_level = payload.permission_level.value
+        audit(db, user, "share_grant_updated", "CALCULATION", calculation.id, {"grantee": grantee.soeid, "permission": existing.permission_level})
+        db.commit()
+        return ok(share_out(db, existing))
     grant = ShareGrant(
         resource_type="CALCULATION",
         resource_id=calculation.id,

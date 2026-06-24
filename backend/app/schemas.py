@@ -106,6 +106,7 @@ class CalculationOut(BaseModel):
     asset: dict[str, Any]
     current_input_version_id: int | None
     current_run_id: int | None
+    latest_run: dict[str, Any] | None = None
     created_at: datetime
     updated_at: datetime
     permission: str

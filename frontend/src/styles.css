@@ -55,6 +55,7 @@ h1, h2, h3, h4, p { margin: 0; }
 .stat span { color: var(--muted); font-size: 12px; font-weight: 700; }
 .stat strong { display: block; margin-top: 4px; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; }
 .grid { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 14px; align-items: stretch; }
+.grid.wide { grid-template-columns: minmax(0,1fr) 300px; }
 .panel { overflow: hidden; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line-soft); }
 .panel-head h2 { font-size: 14px; }
@@ -91,7 +92,30 @@ label { color: #465469; font-size: 12px; font-weight: 800; }
 input, select { height: 38px; border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; background: #fff; color: var(--ink); }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .notice { margin: 10px 0; color: var(--muted); font-size: 13px; }
+.notice.success { color: var(--green); background: var(--green-soft); border: 1px solid #cfeee0; border-radius: 8px; padding: 10px; }
+.notice.warning { color: var(--amber); background: var(--amber-soft); border: 1px solid #ffe3ad; border-radius: 8px; padding: 10px; }
 .error { color: var(--red); background: var(--red-soft); border: 1px solid #ffd0ca; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
+.empty-state {
+  margin: 14px;
+  min-height: 132px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  text-align: center;
+  border: 1px dashed #c8d1de;
+  border-radius: 10px;
+  background: #fbfcfd;
+  color: var(--muted);
+  padding: 18px;
+}
+.empty-state strong {
+  color: var(--ink);
+  font-size: 15px;
+}
+.empty-state span {
+  max-width: 460px;
+  font-size: 13px;
+}
 .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; padding: 14px; }
 .metric { padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
 .metric span { color: var(--muted); font-size: 12px; font-weight: 700; }

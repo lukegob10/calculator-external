@@ -17,6 +17,7 @@ The attached product specification describes a polished enterprise calculation w
 | [dependencies-and-standards.md](dependencies-and-standards.md) | Recommended stack, dependency categories, engineering standards, and primary-source references. |
 | [package-security-review.md](package-security-review.md) | Dependency approval, supply-chain security checks, lockfile rules, audit gates, and package rejection criteria. |
 | [implementation-dependency-review.md](implementation-dependency-review.md) | Package review record for dependencies introduced in the first implementation slice. |
+| [product-hardening-backlog.md](product-hardening-backlog.md) | Prioritized backlog for turning the working foundation into a polished enterprise product. |
 | [phased-implementation-plan.md](phased-implementation-plan.md) | Sequenced project phases, deliverables, acceptance criteria, and validation focus. |
 | [open-questions.md](open-questions.md) | Decisions required before production hardening and questions that affect scope or data design. |
 
