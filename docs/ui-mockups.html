@@ -1,0 +1,1917 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enterprise Calculation Workspace - UI Mockups</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --panel-soft: #fafbfc;
+      --ink: #172033;
+      --muted: #687385;
+      --subtle: #8d97a8;
+      --line: #dfe4ea;
+      --line-soft: #edf0f4;
+      --blue: #2f6df6;
+      --blue-soft: #edf3ff;
+      --green: #16845b;
+      --green-soft: #eaf7f1;
+      --amber: #a56312;
+      --amber-soft: #fff4df;
+      --red: #b42318;
+      --red-soft: #fff0ee;
+      --violet: #635bff;
+      --shadow: 0 14px 36px rgba(23, 32, 51, 0.10);
+      --shadow-soft: 0 8px 22px rgba(23, 32, 51, 0.07);
+      --radius: 8px;
+      --radius-sm: 6px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(47, 109, 246, 0.08), transparent 34%),
+        linear-gradient(180deg, #fbfcfe 0%, var(--bg) 240px);
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    svg {
+      display: block;
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex: 0 0 auto;
+    }
+
+    .page {
+      width: min(1440px, calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .spec-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 30px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      max-width: 820px;
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    .spec-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 30px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.74);
+      color: #364255;
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .toc a {
+      color: #344054;
+      text-decoration: none;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(23, 32, 51, 0.03);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .artboard {
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .artboard-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff 0%, #fbfcfd 100%);
+    }
+
+    .artboard-title h2 {
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .artboard-title p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .note {
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      color: #344054;
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .app-frame {
+      min-height: 760px;
+      background: var(--bg);
+      display: grid;
+      grid-template-columns: 232px 1fr;
+    }
+
+    .sidebar {
+      padding: 18px 14px;
+      border-right: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 8px 18px;
+      border-bottom: 1px solid var(--line-soft);
+      margin-bottom: 14px;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(135deg, #172033, #2f6df6);
+      box-shadow: 0 10px 18px rgba(47, 109, 246, 0.20);
+      font-weight: 800;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.1;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav-section {
+      margin: 16px 0;
+    }
+
+    .nav-label {
+      color: var(--subtle);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0 10px 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      height: 36px;
+      padding: 0 10px;
+      border-radius: 8px;
+      color: #39475b;
+      font-size: 13px;
+      font-weight: 650;
+      margin-bottom: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .nav-count {
+      margin-left: auto;
+      min-width: 22px;
+      text-align: center;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #eef1f5;
+      color: #596579;
+      font-size: 11px;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 18px 20px 20px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      min-width: 300px;
+      max-width: 520px;
+      flex: 1;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--muted);
+      box-shadow: 0 1px 0 rgba(23, 32, 51, 0.02);
+    }
+
+    .top-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      height: 36px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: #2e3a4c;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 1px 0 rgba(23, 32, 51, 0.03);
+    }
+
+    .top-action.primary {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(47, 109, 246, 0.22);
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #202b3d;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .page-head h3 {
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    .page-head p {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 13px;
+    }
+
+    .status-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(23, 32, 51, 0.03);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 20px;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat .micro {
+      color: var(--subtle);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 296px;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .content-grid.balanced {
+      align-items: stretch;
+    }
+
+    .content-grid.balanced > .panel,
+    .content-grid.balanced > .rail {
+      height: 100%;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(23, 32, 51, 0.03);
+      overflow: hidden;
+    }
+
+    .panel.stretch {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .panel-fill {
+      flex: 1;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .panel-head h4 {
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .panel-head .tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line-soft);
+      background: #fbfcfd;
+    }
+
+    .filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 26px;
+      padding: 0 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: #465469;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-align: left;
+      background: #fbfcfd;
+      border-bottom: 1px solid var(--line-soft);
+      padding: 9px 12px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line-soft);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .name-cell strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    .name-cell span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .action-cell {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .badge.amber {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .badge.blue {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .badge.red {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .badge.gray {
+      background: #eef1f5;
+      color: #596579;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 30px;
+      height: 30px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: #445269;
+    }
+
+    .rail {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rail.balanced {
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      height: 100%;
+    }
+
+    .rail.balanced .panel {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .rail.balanced .panel > :last-child {
+      flex: 1;
+    }
+
+    .activity-item {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 9px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .activity-item:last-child {
+      border-bottom: 0;
+    }
+
+    .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .activity-item strong {
+      display: block;
+      font-size: 12px;
+    }
+
+    .activity-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .calc-frame {
+      min-height: 780px;
+      background: var(--bg);
+      display: grid;
+      grid-template-columns: 232px 1fr;
+    }
+
+    .calc-layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr) 300px;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .form-section {
+      padding: 12px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .form-section:last-child {
+      border-bottom: 0;
+    }
+
+    .form-section h5 {
+      margin: 0 0 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #4b596d;
+    }
+
+    .field {
+      margin-bottom: 10px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      color: #465469;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .fake-input {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: #1f2a3d;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      padding: 12px;
+      border-bottom: 1px solid var(--line-soft);
+      background: linear-gradient(180deg, #fff 0%, #fbfcfd 100%);
+    }
+
+    .metric {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 24px;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric small {
+      display: block;
+      margin-top: 6px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .chart-card {
+      padding: 14px;
+    }
+
+    .bar-chart {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 116px 1fr 56px;
+      gap: 10px;
+      align-items: center;
+      color: #405066;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .bar-track {
+      height: 9px;
+      border-radius: 999px;
+      background: #edf0f4;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), #74a2ff);
+    }
+
+    .drawer-section {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .drawer-section:last-child {
+      border-bottom: 0;
+    }
+
+    .kv {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .kv strong {
+      color: #263348;
+      font-weight: 750;
+      text-align: right;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .scenario-card {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .scenario-head {
+      padding: 12px;
+      border-bottom: 1px solid var(--line-soft);
+      background: #fbfcfd;
+    }
+
+    .scenario-head strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .scenario-head span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .scenario-metric {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line-soft);
+      font-size: 12px;
+    }
+
+    .scenario-metric:last-child {
+      border-bottom: 0;
+    }
+
+    .scenario-metric span {
+      color: var(--muted);
+    }
+
+    .scenario-metric strong {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .auth-frame {
+      min-height: 720px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      background:
+        linear-gradient(135deg, rgba(47, 109, 246, 0.10), transparent 36%),
+        #f7f8fa;
+    }
+
+    .auth-visual {
+      padding: 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid var(--line);
+    }
+
+    .auth-copy {
+      max-width: 560px;
+    }
+
+    .auth-copy h3 {
+      font-size: 34px;
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin-bottom: 12px;
+    }
+
+    .auth-copy p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .auth-panel {
+      align-self: center;
+      width: 360px;
+      justify-self: center;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow-soft);
+      padding: 22px;
+    }
+
+    .auth-panel h4 {
+      margin: 0 0 4px;
+      font-size: 19px;
+    }
+
+    .auth-panel p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .auth-panel .fake-input {
+      height: 40px;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+
+    .full-button {
+      width: 100%;
+      height: 40px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 800;
+      margin-top: 4px;
+      box-shadow: 0 9px 18px rgba(47, 109, 246, 0.22);
+    }
+
+    .mini-dashboard {
+      width: min(600px, 100%);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.76);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .upload-zone {
+      margin: 14px;
+      height: 170px;
+      border: 1px dashed #b9c4d3;
+      border-radius: 10px;
+      background: #fbfcfe;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .upload-zone strong {
+      color: #243147;
+      display: block;
+      font-size: 16px;
+      margin: 8px 0 3px;
+    }
+
+    .split-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 14px;
+      align-items: stretch;
+    }
+
+    .split-two > .panel {
+      min-height: 100%;
+    }
+
+    .access-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .permission-stack {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .permission-card {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      min-height: 68px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+    }
+
+    .permission-card strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    .permission-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .matrix {
+      padding: 14px;
+    }
+
+    .matrix table td,
+    .matrix table th {
+      text-align: center;
+    }
+
+    .matrix table td:first-child,
+    .matrix table th:first-child {
+      text-align: left;
+    }
+
+    .modal-preview {
+      width: min(520px, 100%);
+      margin: 14px auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .modal-body {
+      padding: 14px;
+    }
+
+    .permission-select {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .permission-option {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      min-height: 74px;
+    }
+
+    .permission-option.active {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .permission-option strong {
+      display: block;
+      font-size: 12px;
+    }
+
+    .permission-option span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .timeline {
+      padding: 8px 14px 14px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 9px;
+      padding: 9px 0;
+      color: #344054;
+      font-size: 12px;
+    }
+
+    .timeline-pin {
+      width: 9px;
+      height: 9px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 0 4px var(--blue-soft);
+    }
+
+    .timeline-item span {
+      display: block;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    @media (max-width: 1100px) {
+      .app-frame,
+      .calc-frame {
+        grid-template-columns: 72px 1fr;
+      }
+
+      .brand strong,
+      .brand span,
+      .nav-label,
+      .nav-item span:not(.nav-count) {
+        display: none;
+      }
+
+      .brand {
+        justify-content: center;
+      }
+
+      .nav-item {
+        justify-content: center;
+      }
+
+      .nav-count {
+        display: none;
+      }
+
+      .content-grid,
+      .calc-layout,
+      .access-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .status-strip,
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .permission-select {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-frame {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-visual {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-6h5v6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V5"/><path d="m7 10 5-5 5 5"/><path d="M5 19h14"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 5v11"/><path d="m7 11 5 5 5-5"/><path d="M5 19h14"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.5 10.5 7-4"/><path d="m8.5 13.5 7 4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M18 12a6 6 0 0 0-10-4.5L4 12"/><path d="M6 12a6 6 0 0 0 10 4.5L20 12"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v5l3 2"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M5 6h14v10H8l-3 3z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 3 20h18z"/><path d="M12 9v5"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 10h16"/><path d="M9 5v14"/><path d="M15 5v14"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3"/><path d="M12 18v3"/><path d="m5.6 5.6 2.1 2.1"/><path d="m16.3 16.3 2.1 2.1"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="m5.6 18.4 2.1-2.1"/><path d="m16.3 7.7 2.1-2.1"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/></symbol>
+  </svg>
+
+  <div class="page">
+    <header class="spec-header">
+      <div>
+        <div class="eyebrow">UI Spec Mockups</div>
+        <h1>Enterprise Calculation Workspace</h1>
+        <p class="intro">Static high-fidelity wireframes for a polished external asset calculator. These screens are documentation artifacts only: no framework, no package dependencies, and no application implementation.</p>
+      </div>
+      <div class="spec-chip-row">
+        <span class="chip">Plain TypeScript target</span>
+        <span class="chip">Python backend target</span>
+        <span class="chip">Oracle-backed evidence</span>
+        <span class="chip">No frontend framework</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Mockup sections">
+      <a href="#auth">Login</a>
+      <a href="#business">Business Deals</a>
+      <a href="#calculation">Calculation Portal</a>
+      <a href="#scenario">Scenario Compare</a>
+      <a href="#admin">Admin Console</a>
+      <a href="#app-admin">App Access</a>
+      <a href="#sharing-admin">Share/Revoke</a>
+      <a href="#parameters">Parameters</a>
+      <a href="#batch">Batch Upload</a>
+    </nav>
+
+    <section class="artboard" id="auth">
+      <div class="artboard-title">
+        <div>
+          <h2>Login And Account Entry</h2>
+          <p>Public entry should feel secure, restrained, and premium without becoming a marketing page.</p>
+        </div>
+        <span class="note">Public screen</span>
+      </div>
+      <div class="auth-frame">
+        <div class="auth-visual">
+          <div class="brand">
+            <div class="brand-mark">EC</div>
+            <div><strong>Enterprise Calculation</strong><span>Asset return workspace</span></div>
+          </div>
+          <div class="auth-copy">
+            <h3>Run governed asset calculations with clean audit evidence.</h3>
+            <p>Create deals, compare scenarios, inspect applied tax assumptions, and preserve every run with the exact input, parameter set, and engine version.</p>
+          </div>
+          <div class="mini-dashboard">
+            <div class="panel-head">
+              <h4>Recent calculation evidence</h4>
+              <span class="badge green">Clean</span>
+            </div>
+            <table>
+              <tbody>
+                <tr><td class="name-cell"><strong>Alpha Credit Base</strong><span>CUSIP 123456AB</span></td><td class="num">12.4%</td><td><span class="badge green">Complete</span></td></tr>
+                <tr><td class="name-cell"><strong>June Downside Case</strong><span>Internal SEC-44</span></td><td class="num">8.1%</td><td><span class="badge amber">Warning</span></td></tr>
+                <tr><td class="name-cell"><strong>Portfolio Upload 06</strong><span>42 rows</span></td><td class="num">38/42</td><td><span class="badge blue">Validated</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="auth-panel">
+          <h4>Sign in</h4>
+          <p>Use your SOEID and password to continue.</p>
+          <div class="field"><label>SOEID</label><div class="fake-input">axp2481</div></div>
+          <div class="field"><label>Password</label><div class="fake-input">••••••••••••</div></div>
+          <button class="full-button">Sign in</button>
+          <div style="display:flex;justify-content:space-between;margin-top:14px;color:var(--muted);font-size:12px;font-weight:700">
+            <span>Create account</span>
+            <span>Need help?</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="artboard" id="business">
+      <div class="artboard-title">
+        <div>
+          <h2>Business Deals Dashboard</h2>
+          <p>The first authenticated screen is a deal table with supporting status, not a field of disconnected cards.</p>
+        </div>
+        <span class="note">Business user landing</span>
+      </div>
+      <div class="app-frame">
+        <aside class="sidebar">
+          <div class="brand"><div class="brand-mark">EC</div><div><strong>External Calc</strong><span>Business workspace</span></div></div>
+          <div class="nav-section">
+            <div class="nav-label">Workspace</div>
+            <div class="nav-item active"><svg class="icon"><use href="#i-home"></use></svg><span>Deals</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-plus"></use></svg><span>New calculation</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-table"></use></svg><span>Scenarios</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-upload"></use></svg><span>Batch upload</span></div>
+          </div>
+          <div class="nav-section">
+            <div class="nav-label">Collaboration</div>
+            <div class="nav-item"><svg class="icon"><use href="#i-share"></use></svg><span>Shared with me</span><span class="nav-count">5</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-check"></use></svg><span>Tasks</span><span class="nav-count">3</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-clock"></use></svg><span>Activity</span></div>
+          </div>
+        </aside>
+        <main class="main">
+          <div class="topbar">
+            <div class="search"><svg class="icon"><use href="#i-search"></use></svg>Search deal, asset, CUSIP, owner, run ID</div>
+            <button class="top-action"><svg class="icon"><use href="#i-upload"></use></svg>Batch upload</button>
+            <button class="top-action primary"><svg class="icon"><use href="#i-plus"></use></svg>New calculation</button>
+            <div class="avatar">LG</div>
+          </div>
+          <div class="page-head">
+            <div><h3>Deals</h3><p>Saved calculations, live drafts, shared work, and recent output evidence.</p></div>
+            <span class="badge blue">Tax Methodology v3.2 active</span>
+          </div>
+          <div class="status-strip">
+            <div class="stat"><span>Open drafts</span><strong>7</strong><div class="micro">2 updated today</div></div>
+            <div class="stat"><span>Completed week</span><strong>23</strong><div class="micro">18 clean, 5 warning</div></div>
+            <div class="stat"><span>Shared with me</span><strong>5</strong><div class="micro">3 view, 2 edit</div></div>
+            <div class="stat"><span>Tasks due</span><strong>3</strong><div class="micro">1 blocked</div></div>
+            <div class="stat"><span>Exports</span><strong>14</strong><div class="micro">permission scoped</div></div>
+          </div>
+          <div class="content-grid balanced">
+            <section class="panel stretch">
+              <div class="panel-head">
+                <h4>Calculation deals</h4>
+                <div class="tools"><svg class="icon"><use href="#i-filter"></use></svg>Saved view: Active work</div>
+              </div>
+              <div class="filter-row">
+                <span class="filter-pill">Owner: Me</span>
+                <span class="filter-pill">Status: Active</span>
+                <span class="filter-pill">Parameter: v3.2</span>
+                <span class="filter-pill">Updated: 30 days</span>
+              </div>
+              <table>
+                <thead>
+                  <tr><th>Deal</th><th>Asset</th><th>Status</th><th class="num">External return</th><th class="num">Tax impact</th><th>Updated</th><th class="action-cell">Actions</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="name-cell"><strong>Alpha Credit Base</strong><span>Owned by L. Goblirsch</span></td>
+                    <td>CUSIP 123456AB</td>
+                    <td><span class="badge green">Complete</span></td>
+                    <td class="num">12.4%</td>
+                    <td class="num">-1.8%</td>
+                    <td>Today 9:41</td>
+                    <td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-table"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-download"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-share"></use></svg></button></div></td>
+                  </tr>
+                  <tr>
+                    <td class="name-cell"><strong>June Downside Case</strong><span>Scenario set: stress 01</span></td>
+                    <td>Internal SEC-44</td>
+                    <td><span class="badge amber">Warning</span></td>
+                    <td class="num">8.1%</td>
+                    <td class="num">-2.6%</td>
+                    <td>Yesterday</td>
+                    <td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-refresh"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-message"></use></svg></button></div></td>
+                  </tr>
+                  <tr>
+                    <td class="name-cell"><strong>New Asset Draft</strong><span>Missing final price input</span></td>
+                    <td>TBD</td>
+                    <td><span class="badge gray">Draft</span></td>
+                    <td class="num">-</td>
+                    <td class="num">-</td>
+                    <td>Jun 20</td>
+                    <td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-plus"></use></svg></button></div></td>
+                  </tr>
+                  <tr>
+                    <td class="name-cell"><strong>Shared Portfolio Review</strong><span>Shared by A. Patel</span></td>
+                    <td>Portfolio 84A</td>
+                    <td><span class="badge blue">Shared edit</span></td>
+                    <td class="num">10.6%</td>
+                    <td class="num">-2.1%</td>
+                    <td>Jun 18</td>
+                    <td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-table"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-message"></use></svg></button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <aside class="rail balanced">
+              <section class="panel">
+                <div class="panel-head"><h4>Needs attention</h4><span class="badge amber">4</span></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-alert"></use></svg></div><div><strong>Market inputs stale</strong><span>2 calculations have warning state.</span></div></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-check"></use></svg></div><div><strong>Tax review due</strong><span>Alpha Credit task due Friday.</span></div></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-share"></use></svg></div><div><strong>Shared edit granted</strong><span>A. Patel added you to Portfolio Review.</span></div></div>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><h4>Recent outputs</h4><span class="tools">View all</span></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-file"></use></svg></div><div><strong>RUN-2026-00941</strong><span>External return 12.4%</span></div></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-file"></use></svg></div><div><strong>RUN-2026-00936</strong><span>Scenario compare exported.</span></div></div>
+              </section>
+            </aside>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" id="calculation">
+      <div class="artboard-title">
+        <div>
+          <h2>Calculation Portal</h2>
+          <p>A tight workbench for inputs, outputs, warnings, provenance, comments, and run history.</p>
+        </div>
+        <span class="note">Primary workflow</span>
+      </div>
+      <div class="calc-frame">
+        <aside class="sidebar">
+          <div class="brand"><div class="brand-mark">EC</div><div><strong>External Calc</strong><span>Calculation portal</span></div></div>
+          <div class="nav-section">
+            <div class="nav-label">Calculation</div>
+            <div class="nav-item active"><svg class="icon"><use href="#i-table"></use></svg><span>Output</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-settings"></use></svg><span>Inputs</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-clock"></use></svg><span>Run history</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-message"></use></svg><span>Comments</span><span class="nav-count">4</span></div>
+          </div>
+        </aside>
+        <main class="main">
+          <div class="topbar">
+            <div class="search"><svg class="icon"><use href="#i-search"></use></svg>Alpha Credit Base / CUSIP 123456AB</div>
+            <button class="top-action"><svg class="icon"><use href="#i-share"></use></svg>Share</button>
+            <button class="top-action"><svg class="icon"><use href="#i-download"></use></svg>Export</button>
+            <button class="top-action primary"><svg class="icon"><use href="#i-refresh"></use></svg>Rerun</button>
+          </div>
+          <div class="page-head">
+            <div><h3>Alpha Credit Base</h3><p>CUSIP 123456AB. Current run RUN-2026-00941 completed today at 9:41.</p></div>
+            <div style="display:flex;gap:8px"><span class="badge green">Complete</span><span class="badge blue">Shared view: 2</span></div>
+          </div>
+          <div class="calc-layout">
+            <section class="panel">
+              <div class="panel-head"><h4>Inputs</h4><span class="badge blue">v4</span></div>
+              <div class="form-section">
+                <h5>Asset</h5>
+                <div class="field"><label>Identifier <span>required</span></label><div class="fake-input">CUSIP 123456AB</div></div>
+                <div class="field"><label>Asset value</label><div class="fake-input">$84,200,000</div></div>
+                <div class="field"><label>Balance</label><div class="fake-input">$76,000,000</div></div>
+              </div>
+              <div class="form-section">
+                <h5>Pricing</h5>
+                <div class="field"><label>Price</label><div class="fake-input">98.625</div></div>
+                <div class="field"><label>Spread</label><div class="fake-input">245 bps</div></div>
+                <div class="field"><label>Rate</label><div class="fake-input">6.40%</div></div>
+              </div>
+              <div class="form-section">
+                <h5>Tax and capital</h5>
+                <div class="field"><label>Tax method</label><div class="fake-input">Admin controlled</div></div>
+                <div class="field"><label>Capital allocation</label><div class="fake-input">$11,400,000</div></div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-head">
+                <h4>Output summary</h4>
+                <div class="tools"><svg class="icon"><use href="#i-clock"></use></svg>Engine 1.0.0</div>
+              </div>
+              <div class="metric-grid">
+                <div class="metric"><span>External return</span><strong>12.4%</strong><small>+1.2 vs base target</small></div>
+                <div class="metric"><span>ROTCE-like return</span><strong>15.8%</strong><small>+0.9 scenario delta</small></div>
+                <div class="metric"><span>Tax impact</span><strong>-1.8%</strong><small style="color:var(--amber)">Within range</small></div>
+                <div class="metric"><span>Projected value</span><strong>$88.9M</strong><small>+5.6% gross</small></div>
+              </div>
+              <div class="chart-card">
+                <div class="panel-head" style="padding:0 0 10px;border-bottom:0"><h4>Return decomposition</h4><span class="badge green">Clean run</span></div>
+                <div class="bar-chart">
+                  <div class="bar-row"><span>Spread income</span><div class="bar-track"><div class="bar" style="width:88%"></div></div><strong>8.9%</strong></div>
+                  <div class="bar-row"><span>Value impact</span><div class="bar-track"><div class="bar" style="width:64%"></div></div><strong>4.7%</strong></div>
+                  <div class="bar-row"><span>Tax adjustment</span><div class="bar-track"><div class="bar" style="width:31%;background:linear-gradient(90deg,#a56312,#f4bc61)"></div></div><strong>-1.8%</strong></div>
+                  <div class="bar-row"><span>Capital charge</span><div class="bar-track"><div class="bar" style="width:42%;background:linear-gradient(90deg,#16845b,#70d5a5)"></div></div><strong>-0.6%</strong></div>
+                </div>
+              </div>
+              <table>
+                <thead><tr><th>Output field</th><th class="num">Base</th><th class="num">Current</th><th class="num">Delta</th></tr></thead>
+                <tbody>
+                  <tr><td>Net projected income</td><td class="num">$8.42M</td><td class="num">$9.15M</td><td class="num"><span class="badge green">+$0.73M</span></td></tr>
+                  <tr><td>Effective tax drag</td><td class="num">-2.0%</td><td class="num">-1.8%</td><td class="num"><span class="badge green">+0.2%</span></td></tr>
+                  <tr><td>Sensitivity at +50 bps</td><td class="num">10.9%</td><td class="num">11.7%</td><td class="num"><span class="badge blue">+0.8%</span></td></tr>
+                </tbody>
+              </table>
+            </section>
+            <aside class="panel">
+              <div class="panel-head"><h4>Run provenance</h4><span class="badge green">Audited</span></div>
+              <div class="drawer-section">
+                <div class="kv"><span>Parameter set</span><strong>Tax Methodology v3.2</strong></div>
+                <div class="kv"><span>Input version</span><strong>v4</strong></div>
+                <div class="kv"><span>Input hash</span><strong>8fa2...19c</strong></div>
+                <div class="kv"><span>Executed by</span><strong>L. Goblirsch</strong></div>
+                <div class="kv"><span>Run status</span><strong>Complete</strong></div>
+              </div>
+              <div class="drawer-section">
+                <h4 style="margin:0 0 8px;font-size:13px">Warnings</h4>
+                <span class="badge green">No blocking warnings</span>
+              </div>
+              <div class="drawer-section">
+                <h4 style="margin:0 0 8px;font-size:13px">Comments</h4>
+                <div class="activity-item" style="padding:0;grid-template-columns:28px 1fr;border:0"><div class="dot"><svg class="icon"><use href="#i-message"></use></svg></div><div><strong>A. Patel</strong><span>Tax assumption reviewed.</span></div></div>
+              </div>
+              <div class="drawer-section">
+                <h4 style="margin:0 0 8px;font-size:13px">Latest runs</h4>
+                <div class="timeline-item"><div class="timeline-pin"></div><div><strong>RUN-2026-00941</strong><span>Complete, today 9:41</span></div></div>
+                <div class="timeline-item"><div class="timeline-pin" style="background:var(--amber);box-shadow:0 0 0 4px var(--amber-soft)"></div><div><strong>RUN-2026-00936</strong><span>Warning, Jun 22</span></div></div>
+              </div>
+            </aside>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" id="scenario">
+      <div class="artboard-title">
+        <div>
+          <h2>Scenario Comparison</h2>
+          <p>Side-by-side analysis should surface business deltas without hiding run evidence.</p>
+        </div>
+        <span class="note">Business analysis</span>
+      </div>
+      <div class="app-frame">
+        <aside class="sidebar">
+          <div class="brand"><div class="brand-mark">EC</div><div><strong>External Calc</strong><span>Scenario compare</span></div></div>
+          <div class="nav-section">
+            <div class="nav-label">Scenarios</div>
+            <div class="nav-item active"><svg class="icon"><use href="#i-table"></use></svg><span>Compare</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-plus"></use></svg><span>New scenario</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-download"></use></svg><span>Export values</span></div>
+          </div>
+        </aside>
+        <main class="main">
+          <div class="topbar">
+            <div class="search"><svg class="icon"><use href="#i-search"></use></svg>Compare scenarios for Alpha Credit Base</div>
+            <button class="top-action"><svg class="icon"><use href="#i-plus"></use></svg>Add scenario</button>
+            <button class="top-action primary"><svg class="icon"><use href="#i-download"></use></svg>Export comparison</button>
+          </div>
+          <div class="page-head">
+            <div><h3>Alpha Credit Scenario Comparison</h3><p>Base, downside, and upside runs are locked to their exact input and parameter versions.</p></div>
+            <span class="badge blue">3 scenarios selected</span>
+          </div>
+          <section class="panel">
+            <div class="compare-grid">
+              <div class="scenario-card">
+                <div class="scenario-head"><strong>Base case</strong><span>RUN-2026-00941, v3.2 parameters</span></div>
+                <div class="scenario-metric"><span>External return</span><strong>12.4%</strong></div>
+                <div class="scenario-metric"><span>ROTCE-like return</span><strong>15.8%</strong></div>
+                <div class="scenario-metric"><span>Projected value</span><strong>$88.9M</strong></div>
+                <div class="scenario-metric"><span>Tax impact</span><strong>-1.8%</strong></div>
+                <div class="scenario-metric"><span>Status</span><strong><span class="badge green">Clean</span></strong></div>
+              </div>
+              <div class="scenario-card">
+                <div class="scenario-head"><strong>Downside spread</strong><span>RUN-2026-00942, spread +50 bps</span></div>
+                <div class="scenario-metric"><span>External return</span><strong>8.1%</strong></div>
+                <div class="scenario-metric"><span>ROTCE-like return</span><strong>10.7%</strong></div>
+                <div class="scenario-metric"><span>Projected value</span><strong>$82.4M</strong></div>
+                <div class="scenario-metric"><span>Tax impact</span><strong>-2.6%</strong></div>
+                <div class="scenario-metric"><span>Status</span><strong><span class="badge amber">Warning</span></strong></div>
+              </div>
+              <div class="scenario-card">
+                <div class="scenario-head"><strong>Upside sale</strong><span>RUN-2026-00943, sale price 101.25</span></div>
+                <div class="scenario-metric"><span>External return</span><strong>16.9%</strong></div>
+                <div class="scenario-metric"><span>ROTCE-like return</span><strong>21.5%</strong></div>
+                <div class="scenario-metric"><span>Projected value</span><strong>$94.1M</strong></div>
+                <div class="scenario-metric"><span>Tax impact</span><strong>-2.0%</strong></div>
+                <div class="scenario-metric"><span>Status</span><strong><span class="badge green">Clean</span></strong></div>
+              </div>
+            </div>
+            <table>
+              <thead><tr><th>Driver</th><th class="num">Base</th><th class="num">Downside</th><th class="num">Upside</th><th>Interpretation</th></tr></thead>
+              <tbody>
+                <tr><td>Spread assumption</td><td class="num">245 bps</td><td class="num">295 bps</td><td class="num">230 bps</td><td>Downside return falls primarily from spread stress.</td></tr>
+                <tr><td>Sale price</td><td class="num">100.10</td><td class="num">97.25</td><td class="num">101.25</td><td>Upside benefits from stronger exit valuation.</td></tr>
+                <tr><td>Tax method</td><td class="num">v3.2</td><td class="num">v3.2</td><td class="num">v3.2</td><td>All scenarios use identical published parameters.</td></tr>
+              </tbody>
+            </table>
+          </section>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" id="admin">
+      <div class="artboard-title">
+        <div>
+          <h2>Admin Console</h2>
+          <p>Dense operations view with system status, failures, pending users, parameter activity, and audit signals.</p>
+        </div>
+        <span class="note">Admin/SME landing</span>
+      </div>
+      <div class="app-frame">
+        <aside class="sidebar">
+          <div class="brand"><div class="brand-mark">EC</div><div><strong>External Calc</strong><span>Admin console</span></div></div>
+          <div class="nav-section">
+            <div class="nav-label">Admin</div>
+            <div class="nav-item active"><svg class="icon"><use href="#i-home"></use></svg><span>Console</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-user"></use></svg><span>Users</span><span class="nav-count">6</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-settings"></use></svg><span>Parameters</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-table"></use></svg><span>Output explorer</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-clock"></use></svg><span>Audit log</span></div>
+          </div>
+        </aside>
+        <main class="main">
+          <div class="topbar">
+            <div class="search"><svg class="icon"><use href="#i-search"></use></svg>Search user, SOEID, asset, run ID, audit event</div>
+            <button class="top-action"><svg class="icon"><use href="#i-filter"></use></svg>Filters</button>
+            <button class="top-action primary"><svg class="icon"><use href="#i-settings"></use></svg>New parameter set</button>
+            <div class="avatar">AD</div>
+          </div>
+          <div class="page-head">
+            <div><h3>Admin Console</h3><p>System status, governed parameter activity, and calculation run oversight.</p></div>
+            <span class="badge green">Production healthy</span>
+          </div>
+          <div class="status-strip">
+            <div class="stat"><span>Queue</span><strong>2</strong><div class="micro">running now</div></div>
+            <div class="stat"><span>Failed today</span><strong>4</strong><div class="micro">2 user input, 2 data</div></div>
+            <div class="stat"><span>Pending users</span><strong>6</strong><div class="micro">approval required</div></div>
+            <div class="stat"><span>Current parameter</span><strong>v3.2</strong><div class="micro">published Jun 17</div></div>
+            <div class="stat"><span>Data freshness</span><strong>1 warn</strong><div class="micro">market inputs stale</div></div>
+          </div>
+          <div class="content-grid balanced">
+            <section class="panel stretch">
+              <div class="panel-head"><h4>Recent calculation runs</h4><div class="tools"><svg class="icon"><use href="#i-filter"></use></svg>Admin output view</div></div>
+              <div class="filter-row">
+                <span class="filter-pill">Run status: All active</span>
+                <span class="filter-pill">Date: Today</span>
+                <span class="filter-pill">Parameter: v3.2</span>
+                <span class="filter-pill">Warnings included</span>
+              </div>
+              <table>
+                <thead><tr><th>Run</th><th>User</th><th>Asset</th><th>Status</th><th>Parameter</th><th>Engine</th><th>Started</th><th class="action-cell">Actions</th></tr></thead>
+                <tbody>
+                  <tr><td class="name-cell"><strong>RUN-2026-00941</strong><span>Alpha Credit Base</span></td><td>L. Goblirsch</td><td>CUSIP 123456AB</td><td><span class="badge green">Complete</span></td><td>v3.2</td><td>1.0.0</td><td>09:41</td><td class="action-cell"><button class="icon-btn"><svg class="icon"><use href="#i-search"></use></svg></button></td></tr>
+                  <tr><td class="name-cell"><strong>RUN-2026-00942</strong><span>Downside spread</span></td><td>M. Chen</td><td>SEC-44</td><td><span class="badge red">Failed</span></td><td>v3.2</td><td>1.0.0</td><td>09:48</td><td class="action-cell"><button class="icon-btn"><svg class="icon"><use href="#i-refresh"></use></svg></button></td></tr>
+                  <tr><td class="name-cell"><strong>RUN-2026-00943</strong><span>Upside sale</span></td><td>A. Patel</td><td>CUSIP 223344CC</td><td><span class="badge amber">Warning</span></td><td>v3.2</td><td>1.0.0</td><td>10:02</td><td class="action-cell"><button class="icon-btn"><svg class="icon"><use href="#i-search"></use></svg></button></td></tr>
+                </tbody>
+              </table>
+            </section>
+            <aside class="rail balanced">
+              <section class="panel">
+                <div class="panel-head"><h4>Pending approvals</h4><span class="badge amber">6</span></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-user"></use></svg></div><div><strong>mchen92</strong><span>Business user request.</span></div></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-user"></use></svg></div><div><strong>apatel77</strong><span>SME access requested.</span></div></div>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><h4>Audit highlights</h4><span class="tools">Today</span></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-settings"></use></svg></div><div><strong>Parameter v3.2 published</strong><span>Published by R. Smith.</span></div></div>
+                <div class="activity-item"><div class="dot"><svg class="icon"><use href="#i-download"></use></svg></div><div><strong>Full output export</strong><span>Admin export audited.</span></div></div>
+              </section>
+            </aside>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" id="app-admin">
+      <div class="artboard-title">
+        <div>
+          <h2>Application Access Administration</h2>
+          <p>Admins control account activation, roles, disabled users, and elevated access. Base users get only their own workspace until work is shared with them.</p>
+        </div>
+        <span class="note">Application administration</span>
+      </div>
+      <div class="app-frame">
+        <aside class="sidebar">
+          <div class="brand"><div class="brand-mark">EC</div><div><strong>External Calc</strong><span>Access admin</span></div></div>
+          <div class="nav-section">
+            <div class="nav-label">Application</div>
+            <div class="nav-item"><svg class="icon"><use href="#i-home"></use></svg><span>Console</span></div>
+            <div class="nav-item active"><svg class="icon"><use href="#i-user"></use></svg><span>Users</span><span class="nav-count">6</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-share"></use></svg><span>Access grants</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-settings"></use></svg><span>Roles</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-clock"></use></svg><span>Access audit</span></div>
+          </div>
+        </aside>
+        <main class="main">
+          <div class="topbar">
+            <div class="search"><svg class="icon"><use href="#i-search"></use></svg>Search user, SOEID, role, status, access grant</div>
+            <button class="top-action"><svg class="icon"><use href="#i-filter"></use></svg>Access filters</button>
+            <button class="top-action primary"><svg class="icon"><use href="#i-check"></use></svg>Review pending users</button>
+            <div class="avatar">AD</div>
+          </div>
+          <div class="page-head">
+            <div><h3>User And Role Administration</h3><p>Account activation and role changes are admin-only. Resource access is granted by owners or admins and is audited.</p></div>
+            <span class="badge blue">Default role: Base user</span>
+          </div>
+          <div class="status-strip">
+            <div class="stat"><span>Active users</span><strong>184</strong><div class="micro">176 base, 8 admin</div></div>
+            <div class="stat"><span>Pending approval</span><strong>6</strong><div class="micro">new account requests</div></div>
+            <div class="stat"><span>Disabled</span><strong>3</strong><div class="micro">cannot sign in</div></div>
+            <div class="stat"><span>Active grants</span><strong>312</strong><div class="micro">view, edit, export</div></div>
+            <div class="stat"><span>Exceptions</span><strong>2</strong><div class="micro">admin review needed</div></div>
+          </div>
+          <div class="content-grid balanced">
+            <section class="panel stretch">
+              <div class="panel-head">
+                <h4>User access queue</h4>
+                <div class="tools"><svg class="icon"><use href="#i-filter"></use></svg>Saved view: Requires admin action</div>
+              </div>
+              <div class="filter-row">
+                <span class="filter-pill">Status: Pending + Active</span>
+                <span class="filter-pill">Role: Base user</span>
+                <span class="filter-pill">Elevated requests</span>
+                <span class="filter-pill">Last 14 days</span>
+              </div>
+              <table>
+                <thead><tr><th>User</th><th>Status</th><th>Role</th><th>Access basis</th><th>Last activity</th><th class="action-cell">Actions</th></tr></thead>
+                <tbody>
+                  <tr><td class="name-cell"><strong>Maya Chen</strong><span>mchen92</span></td><td><span class="badge amber">Pending</span></td><td>Base user</td><td>Account request</td><td>-</td><td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-check"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-alert"></use></svg></button></div></td></tr>
+                  <tr><td class="name-cell"><strong>Aarav Patel</strong><span>apatel77</span></td><td><span class="badge blue">Active</span></td><td>Base user</td><td>Shared edit grants: 4</td><td>Today 10:02</td><td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-share"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-settings"></use></svg></button></div></td></tr>
+                  <tr><td class="name-cell"><strong>Riley Smith</strong><span>rsmith14</span></td><td><span class="badge green">Active</span></td><td>Admin</td><td>Role assignment</td><td>Today 9:18</td><td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-search"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-clock"></use></svg></button></div></td></tr>
+                  <tr><td class="name-cell"><strong>Jamie Lee</strong><span>jlee56</span></td><td><span class="badge red">Disabled</span></td><td>Base user</td><td>Admin disabled</td><td>Jun 04</td><td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-clock"></use></svg></button></div></td></tr>
+                </tbody>
+              </table>
+              <div class="matrix panel-fill">
+                <div class="panel-head" style="padding:0 0 10px;border-bottom:0"><h4>Permission matrix</h4><span class="badge blue">Backend enforced</span></div>
+                <table>
+                  <thead><tr><th>Capability</th><th>Base user</th><th>Owner</th><th>Edit grant</th><th>Admin</th></tr></thead>
+                  <tbody>
+                    <tr><td>Create own calculation</td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td><td><span class="badge gray">No</span></td><td><span class="badge green">Yes</span></td></tr>
+                    <tr><td>View shared calculation</td><td><span class="badge blue">Grant</span></td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td></tr>
+                    <tr><td>Grant access</td><td><span class="badge gray">No</span></td><td><span class="badge green">Yes</span></td><td><span class="badge amber">Conditional</span></td><td><span class="badge green">Yes</span></td></tr>
+                    <tr><td>Revoke access</td><td><span class="badge gray">No</span></td><td><span class="badge green">Yes</span></td><td><span class="badge gray">No</span></td><td><span class="badge green">Yes</span></td></tr>
+                    <tr><td>Publish parameters</td><td><span class="badge gray">No</span></td><td><span class="badge gray">No</span></td><td><span class="badge gray">No</span></td><td><span class="badge green">Yes</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <aside class="rail balanced">
+              <section class="panel">
+                <div class="panel-head"><h4>Access rules</h4><span class="badge blue">Policy</span></div>
+                <div class="permission-stack">
+                  <div class="permission-card"><div class="dot"><svg class="icon"><use href="#i-user"></use></svg></div><div><strong>Base user</strong><span>Own workspace, own calculations, shared objects only.</span></div><span class="badge gray">Default</span></div>
+                  <div class="permission-card"><div class="dot"><svg class="icon"><use href="#i-share"></use></svg></div><div><strong>Owner grant</strong><span>Owner grants view, edit, or export-values access.</span></div><span class="badge green">Audited</span></div>
+                  <div class="permission-card"><div class="dot"><svg class="icon"><use href="#i-settings"></use></svg></div><div><strong>Admin override</strong><span>Admin can inspect and revoke for support or control.</span></div><span class="badge amber">Sensitive</span></div>
+                </div>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><h4>Approval workflow</h4><span class="badge amber">6 pending</span></div>
+                <div class="timeline">
+                  <div class="timeline-item"><div class="timeline-pin"></div><div><strong>Account requested</strong><span>User submits full name, SOEID, password.</span></div></div>
+                  <div class="timeline-item"><div class="timeline-pin"></div><div><strong>Admin reviews</strong><span>Approve as base user or reject.</span></div></div>
+                  <div class="timeline-item"><div class="timeline-pin"></div><div><strong>User activated</strong><span>Base workspace is available after approval.</span></div></div>
+                  <div class="timeline-item"><div class="timeline-pin" style="background:var(--amber);box-shadow:0 0 0 4px var(--amber-soft)"></div><div><strong>Elevated role</strong><span>Admin-only role change, audit required.</span></div></div>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" id="sharing-admin">
+      <div class="artboard-title">
+        <div>
+          <h2>Sharing And Revocation</h2>
+          <p>Owners collaborate by granting resource-level permissions. Owners and admins can revoke access; every grant and revoke is auditable.</p>
+        </div>
+        <span class="note">Collaboration control</span>
+      </div>
+      <div class="app-frame">
+        <aside class="sidebar">
+          <div class="brand"><div class="brand-mark">EC</div><div><strong>External Calc</strong><span>Sharing control</span></div></div>
+          <div class="nav-section">
+            <div class="nav-label">Access</div>
+            <div class="nav-item active"><svg class="icon"><use href="#i-share"></use></svg><span>Share grants</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-user"></use></svg><span>Collaborators</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-download"></use></svg><span>Export rights</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-clock"></use></svg><span>Grant history</span></div>
+          </div>
+        </aside>
+        <main class="main">
+          <div class="topbar">
+            <div class="search"><svg class="icon"><use href="#i-search"></use></svg>Alpha Credit Base / sharing settings</div>
+            <button class="top-action"><svg class="icon"><use href="#i-clock"></use></svg>Access history</button>
+            <button class="top-action primary"><svg class="icon"><use href="#i-share"></use></svg>Share calculation</button>
+            <div class="avatar">LG</div>
+          </div>
+          <div class="page-head">
+            <div><h3>Alpha Credit Base Access</h3><p>Owner: L. Goblirsch. Grants apply to this calculation and its permitted runs, scenarios, comments, and reports.</p></div>
+            <span class="badge green">Owner can revoke</span>
+          </div>
+          <div class="access-grid">
+            <section class="panel stretch">
+              <div class="panel-head"><h4>Current access grants</h4><div class="tools"><svg class="icon"><use href="#i-filter"></use></svg>Active grants only</div></div>
+              <table>
+                <thead><tr><th>Collaborator</th><th>Permission</th><th>Granted by</th><th>Scope</th><th>Last used</th><th class="action-cell">Actions</th></tr></thead>
+                <tbody>
+                  <tr><td class="name-cell"><strong>Aarav Patel</strong><span>apatel77</span></td><td><span class="badge blue">Edit</span></td><td>L. Goblirsch</td><td>Calculation + scenarios</td><td>Today 10:02</td><td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-settings"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-alert"></use></svg></button></div></td></tr>
+                  <tr><td class="name-cell"><strong>Maya Chen</strong><span>mchen92</span></td><td><span class="badge gray">View</span></td><td>L. Goblirsch</td><td>Calculation only</td><td>Yesterday</td><td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-settings"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-alert"></use></svg></button></div></td></tr>
+                  <tr><td class="name-cell"><strong>Tax Review Group</strong><span>3 active users</span></td><td><span class="badge green">Export values</span></td><td>Admin</td><td>Selected runs</td><td>Jun 22</td><td class="action-cell"><div class="actions"><button class="icon-btn"><svg class="icon"><use href="#i-search"></use></svg></button><button class="icon-btn"><svg class="icon"><use href="#i-alert"></use></svg></button></div></td></tr>
+                </tbody>
+              </table>
+              <div class="matrix panel-fill">
+                <div class="panel-head" style="padding:0 0 10px;border-bottom:0"><h4>Grant behavior</h4><span class="badge blue">Resource scoped</span></div>
+                <table>
+                  <thead><tr><th>Permission</th><th>View</th><th>Edit inputs</th><th>Run</th><th>Export values</th><th>Share</th></tr></thead>
+                  <tbody>
+                    <tr><td>View</td><td><span class="badge green">Yes</span></td><td><span class="badge gray">No</span></td><td><span class="badge gray">No</span></td><td><span class="badge gray">No</span></td><td><span class="badge gray">No</span></td></tr>
+                    <tr><td>Edit</td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td><td><span class="badge gray">No</span></td><td><span class="badge amber">Conditional</span></td></tr>
+                    <tr><td>Export values</td><td><span class="badge green">Yes</span></td><td><span class="badge gray">No</span></td><td><span class="badge gray">No</span></td><td><span class="badge green">Yes</span></td><td><span class="badge gray">No</span></td></tr>
+                    <tr><td>Admin full</td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td><td><span class="badge green">Yes</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <aside class="rail balanced">
+              <section class="panel">
+                <div class="panel-head"><h4>Share pop-out</h4><span class="badge blue">Owner view</span></div>
+                <div class="modal-preview">
+                  <div class="panel-head"><h4>Share Alpha Credit Base</h4><span class="badge green">Owner</span></div>
+                  <div class="modal-body">
+                    <div class="field"><label>Add user or group</label><div class="fake-input">Search by name or SOEID</div></div>
+                    <div class="field"><label>Permission level</label></div>
+                    <div class="permission-select">
+                      <div class="permission-option"><strong>View</strong><span>Read only, no export.</span></div>
+                      <div class="permission-option active"><strong>Edit</strong><span>Inputs, scenarios, runs.</span></div>
+                      <div class="permission-option"><strong>Export values</strong><span>Values-only output.</span></div>
+                    </div>
+                    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+                      <button class="top-action">Cancel</button>
+                      <button class="top-action primary"><svg class="icon"><use href="#i-share"></use></svg>Grant access</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><h4>Access history</h4><span class="badge green">Audited</span></div>
+                <div class="timeline">
+                  <div class="timeline-item"><div class="timeline-pin"></div><div><strong>Edit grant added</strong><span>A. Patel by L. Goblirsch, today 9:52.</span></div></div>
+                  <div class="timeline-item"><div class="timeline-pin"></div><div><strong>Values export granted</strong><span>Tax Review Group by Admin, Jun 22.</span></div></div>
+                  <div class="timeline-item"><div class="timeline-pin" style="background:var(--red);box-shadow:0 0 0 4px var(--red-soft)"></div><div><strong>View grant revoked</strong><span>Former collaborator by owner, Jun 19.</span></div></div>
+                  <div class="timeline-item"><div class="timeline-pin" style="background:var(--amber);box-shadow:0 0 0 4px var(--amber-soft)"></div><div><strong>Admin inspection</strong><span>Support access opened by R. Smith.</span></div></div>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" id="parameters">
+      <div class="artboard-title">
+        <div>
+          <h2>Parameter Management</h2>
+          <p>Admin/SME users need a controlled draft, validate, publish, deprecate workflow with version clarity.</p>
+        </div>
+        <span class="note">Governed admin workflow</span>
+      </div>
+      <div class="app-frame">
+        <aside class="sidebar">
+          <div class="brand"><div class="brand-mark">EC</div><div><strong>External Calc</strong><span>Parameters</span></div></div>
+          <div class="nav-section">
+            <div class="nav-label">Governance</div>
+            <div class="nav-item active"><svg class="icon"><use href="#i-settings"></use></svg><span>Parameter sets</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-file"></use></svg><span>Templates</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-clock"></use></svg><span>Version history</span></div>
+          </div>
+        </aside>
+        <main class="main">
+          <div class="topbar">
+            <div class="search"><svg class="icon"><use href="#i-search"></use></svg>Search parameter set, tax rate, version, publisher</div>
+            <button class="top-action"><svg class="icon"><use href="#i-filter"></use></svg>Compare versions</button>
+            <button class="top-action primary"><svg class="icon"><use href="#i-plus"></use></svg>Create draft</button>
+          </div>
+          <div class="page-head">
+            <div><h3>Parameter Sets</h3><p>Tax rates, methodology assumptions, and reference parameters used by calculation runs.</p></div>
+            <span class="badge blue">Published set is immutable</span>
+          </div>
+          <div class="split-two">
+            <section class="panel">
+              <div class="panel-head"><h4>Version list</h4><div class="tools">Drafts and published sets</div></div>
+              <table>
+                <thead><tr><th>Name</th><th>Status</th><th>Effective</th><th>Publisher</th><th class="action-cell">Actions</th></tr></thead>
+                <tbody>
+                  <tr><td class="name-cell"><strong>Tax Methodology v3.3</strong><span>Draft pending validation</span></td><td><span class="badge gray">Draft</span></td><td>Jul 01</td><td>-</td><td class="action-cell"><button class="icon-btn"><svg class="icon"><use href="#i-settings"></use></svg></button></td></tr>
+                  <tr><td class="name-cell"><strong>Tax Methodology v3.2</strong><span>Current published</span></td><td><span class="badge green">Published</span></td><td>Jun 17</td><td>R. Smith</td><td class="action-cell"><button class="icon-btn"><svg class="icon"><use href="#i-search"></use></svg></button></td></tr>
+                  <tr><td class="name-cell"><strong>Tax Methodology v3.1</strong><span>Superseded</span></td><td><span class="badge amber">Deprecated</span></td><td>May 03</td><td>K. Jones</td><td class="action-cell"><button class="icon-btn"><svg class="icon"><use href="#i-clock"></use></svg></button></td></tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h4>Draft editor preview</h4><span class="badge amber">Needs validation</span></div>
+              <div class="form-section">
+                <h5>Tax rates</h5>
+                <div class="field"><label>Default tax rate</label><div class="fake-input">21.00%</div></div>
+                <div class="field"><label>High-tax jurisdiction</label><div class="fake-input">28.50%</div></div>
+                <div class="field"><label>Low-tax jurisdiction</label><div class="fake-input">15.00%</div></div>
+              </div>
+              <div class="form-section">
+                <h5>Methodology assumptions</h5>
+                <div class="field"><label>Capital charge method</label><div class="fake-input">Standardized allocation</div></div>
+                <div class="field"><label>Effective date</label><div class="fake-input">2026-07-01</div></div>
+              </div>
+              <div class="drawer-section" style="display:flex;gap:8px;justify-content:flex-end">
+                <button class="top-action"><svg class="icon"><use href="#i-check"></use></svg>Validate</button>
+                <button class="top-action primary"><svg class="icon"><use href="#i-upload"></use></svg>Publish</button>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section class="artboard" id="batch">
+      <div class="artboard-title">
+        <div>
+          <h2>Batch Upload</h2>
+          <p>Bulk workflows need a clear upload affordance, row-level validation, and controlled execution.</p>
+        </div>
+        <span class="note">Business plus admin oversight</span>
+      </div>
+      <div class="app-frame">
+        <aside class="sidebar">
+          <div class="brand"><div class="brand-mark">EC</div><div><strong>External Calc</strong><span>Batch upload</span></div></div>
+          <div class="nav-section">
+            <div class="nav-label">Batch</div>
+            <div class="nav-item active"><svg class="icon"><use href="#i-upload"></use></svg><span>Upload</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-table"></use></svg><span>Jobs</span></div>
+            <div class="nav-item"><svg class="icon"><use href="#i-download"></use></svg><span>Templates</span></div>
+          </div>
+        </aside>
+        <main class="main">
+          <div class="topbar">
+            <div class="search"><svg class="icon"><use href="#i-search"></use></svg>Search batch job, file name, row error, asset</div>
+            <button class="top-action"><svg class="icon"><use href="#i-download"></use></svg>Download template</button>
+            <button class="top-action primary"><svg class="icon"><use href="#i-upload"></use></svg>Upload file</button>
+          </div>
+          <div class="page-head">
+            <div><h3>Batch Upload</h3><p>Validate rows before execution. Valid rows can run while invalid rows remain visible for correction.</p></div>
+            <span class="badge blue">CSV/XLSX template controlled</span>
+          </div>
+          <div class="content-grid balanced">
+            <section class="panel stretch">
+              <div class="panel-head"><h4>Upload and validation</h4><span class="badge amber">Preview mode</span></div>
+              <div class="upload-zone">
+                <div>
+                  <svg class="icon" style="width:34px;height:34px;margin:0 auto;color:var(--blue)"><use href="#i-upload"></use></svg>
+                  <strong>Drop calculation input file here</strong>
+                  <span>CSV or XLSX using the active batch template. No rows run until validation completes.</span>
+                </div>
+              </div>
+              <table>
+                <thead><tr><th>Row</th><th>Asset</th><th>Status</th><th>Issue</th><th class="num">External return</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>CUSIP 123456AB</td><td><span class="badge green">Valid</span></td><td>-</td><td class="num">Pending run</td></tr>
+                  <tr><td>2</td><td>SEC-44</td><td><span class="badge amber">Warning</span></td><td>Tax jurisdiction missing, default applies</td><td class="num">Pending run</td></tr>
+                  <tr><td>3</td><td>CUSIP 778899DD</td><td><span class="badge red">Invalid</span></td><td>Price must be numeric</td><td class="num">-</td></tr>
+                  <tr><td>4</td><td>SEC-91</td><td><span class="badge green">Valid</span></td><td>-</td><td class="num">Pending run</td></tr>
+                </tbody>
+              </table>
+            </section>
+            <aside class="rail balanced">
+              <section class="panel">
+                <div class="panel-head"><h4>Batch summary</h4><span class="badge blue">BATCH-0241</span></div>
+                <div class="drawer-section">
+                  <div class="kv"><span>Total rows</span><strong>42</strong></div>
+                  <div class="kv"><span>Valid rows</span><strong>38</strong></div>
+                  <div class="kv"><span>Warnings</span><strong>3</strong></div>
+                  <div class="kv"><span>Invalid rows</span><strong>4</strong></div>
+                  <div class="kv"><span>Parameter set</span><strong>v3.2</strong></div>
+                </div>
+                <div class="drawer-section" style="display:grid;gap:8px">
+                  <button class="top-action primary"><svg class="icon"><use href="#i-refresh"></use></svg>Run valid rows</button>
+                  <button class="top-action"><svg class="icon"><use href="#i-download"></use></svg>Export errors</button>
+                </div>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><h4>Validation steps</h4><span class="badge green">2 of 3</span></div>
+                <div class="timeline">
+                  <div class="timeline-item"><div class="timeline-pin"></div><div><strong>File received</strong><span>portfolio_inputs_june.xlsx</span></div></div>
+                  <div class="timeline-item"><div class="timeline-pin"></div><div><strong>Schema validated</strong><span>Template v1.4 matched.</span></div></div>
+                  <div class="timeline-item"><div class="timeline-pin" style="background:var(--amber);box-shadow:0 0 0 4px var(--amber-soft)"></div><div><strong>Row review needed</strong><span>4 rows require correction.</span></div></div>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </main>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

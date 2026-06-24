@@ -1,0 +1,14 @@
+{
+  "name": "external-calculator-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc && node scripts/copy-static.mjs",
+    "dev": "npm run build && python -m http.server 5177 --bind 127.0.0.1 --directory dist"
+  },
+  "devDependencies": {
+    "typescript": "5.5.4"
+  }
+}
