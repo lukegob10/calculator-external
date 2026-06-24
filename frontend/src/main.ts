@@ -110,7 +110,6 @@ function shell(content: string, active: string): string {
   const isAdmin = currentUser?.role === "ADMIN";
   const nav = [
     ["dashboard", "Deals"],
-    ["calculation-new", "New Calculation"],
     ["sharing", "Sharing"],
     ["audit", "Activity"],
     ...(isAdmin ? [["admin", "Admin"], ["parameters", "Parameters"]] : []),
@@ -145,6 +144,94 @@ function bindShell(): void {
     currentUser = null;
     localStorage.removeItem("ecw_token");
     void render();
+  });
+}
+
+function calculationFormMarkup(): string {
+  return html`
+    <form id="calc-form" class="form-grid">
+      <div class="field"><label>Name</label><input name="name" value="Alpha Credit Base" required></div>
+      <div class="field"><label>Asset identifier</label><input name="identifier" value="CUSIP 123456AB" required></div>
+      <div class="field"><label>Asset name</label><input name="assetName" value="Alpha Credit" required></div>
+      <div class="field"><label>Identifier type</label><select name="identifier_type"><option selected>CUSIP</option><option>INTERNAL</option><option>TICKER</option><option>ISIN</option></select></div>
+      <div class="field"><label>Asset type</label><input name="asset_type" value="External Asset" required></div>
+      <div class="field"><label>Asset value</label><input name="asset_value" type="number" value="84200000" required></div>
+      <div class="field"><label>Balance</label><input name="balance" type="number" value="76000000" required></div>
+      <div class="field"><label>Price</label><input name="price" type="number" value="98.625" step="0.001" required></div>
+      <div class="field"><label>Spread bps</label><input name="spread_bps" type="number" value="245" required></div>
+      <div class="field"><label>Rate percent</label><input name="rate_percent" type="number" value="6.4" step="0.01" required></div>
+      <div class="field"><label>Capital allocation</label><input name="capital_allocation" type="number" value="11400000" required></div>
+      <div class="field"><label>Tax jurisdiction</label><input name="tax_jurisdiction" value="DEFAULT"></div>
+      <div class="modal-actions"><button class="button" type="button" data-close-modal>Cancel</button><button class="button primary" type="submit">Create calculation</button></div>
+    </form>`;
+}
+
+async function submitCalculationForm(form: HTMLFormElement): Promise<Calculation> {
+  const f = new FormData(form);
+  return api<Calculation>("/api/calculations", {
+    method: "POST",
+    body: JSON.stringify({
+      name: f.get("name"),
+      description: "Created from the deal workspace pop-out.",
+      asset: {
+        identifier: f.get("identifier"),
+        name: f.get("assetName"),
+        identifier_type: f.get("identifier_type"),
+        asset_type: f.get("asset_type"),
+      },
+      input_payload: {
+        asset_value: Number(f.get("asset_value")),
+        balance: Number(f.get("balance")),
+        price: Number(f.get("price")),
+        spread_bps: Number(f.get("spread_bps")),
+        rate_percent: Number(f.get("rate_percent")),
+        capital_allocation: Number(f.get("capital_allocation")),
+        tax_jurisdiction: String(f.get("tax_jurisdiction") ?? "DEFAULT"),
+      },
+    }),
+  });
+}
+
+function closeModal(): void {
+  document.querySelector(".modal-backdrop")?.remove();
+}
+
+function openNewCalculationModal(): void {
+  document.body.insertAdjacentHTML("beforeend", html`
+    <div class="modal-backdrop" role="presentation">
+      <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="new-calculation-title">
+        <div class="modal-head">
+          <div><h2 id="new-calculation-title">New Calculation</h2><p>Enter the full asset, pricing, tax, and capital assumptions for the first input version.</p></div>
+          <button class="icon-close" type="button" data-close-modal aria-label="Close">×</button>
+        </div>
+        <div class="modal-context">
+          <span class="pill">Creates input version 1</span>
+          <span class="pill">Uses published parameters when run</span>
+          <span class="pill">Owner: ${escapeHtml(currentUser?.full_name ?? "Current user")}</span>
+        </div>
+        <div class="modal-body">${calculationFormMarkup()}</div>
+      </section>
+    </div>`);
+  document.querySelectorAll<HTMLElement>("[data-close-modal]").forEach(button => button.addEventListener("click", closeModal));
+  document.querySelector<HTMLFormElement>("#calc-form")?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const submit = form.querySelector<HTMLButtonElement>("button[type='submit']");
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = "Creating...";
+    }
+    try {
+      const created = await submitCalculationForm(form);
+      closeModal();
+      await renderCalculationDetail(created.id);
+    } catch (err) {
+      form.insertAdjacentHTML("afterbegin", `<div class="error">${escapeHtml(err instanceof Error ? err.message : "Unable to create calculation.")}</div>`);
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = "Create calculation";
+      }
+    }
   });
 }
 
@@ -189,7 +276,7 @@ function renderLogin(error = ""): void {
 async function renderDashboard(): Promise<void> {
   const data = await api<{ stats: Record<string, number>; calculations: Calculation[] }>("/api/dashboard/business");
   const content = html`
-    <div class="page-head"><div><h1>Deals</h1><p>Saved calculations, shared work, and recent output evidence.</p></div><button class="button primary" data-route="calculation-new">New calculation</button></div>
+    <div class="page-head"><div><h1>Deals</h1><p>Saved calculations, shared work, and recent output evidence.</p></div><button class="button primary" data-open-new-calculation>New calculation</button></div>
     <div class="status-strip">
       <div class="stat"><span>Open drafts</span><strong>${data.stats.open_drafts ?? 0}</strong></div>
       <div class="stat"><span>Accessible calculations</span><strong>${data.stats.accessible_calculations ?? 0}</strong></div>
@@ -209,10 +296,11 @@ async function renderDashboard(): Promise<void> {
           <td class="action-cell"><div class="actions"><button class="button" data-open="${row.id}">Open</button><button class="button primary" data-run="${row.id}">Run</button></div></td>
         </tr>`).join("")}
       </tbody></table>
-      ${data.calculations.length === 0 ? emptyState("No calculations yet", "Create the first calculation to see saved work, output evidence, and sharing controls.", `<button class="button primary" data-route="calculation-new">New calculation</button>`) : ""}
+      ${data.calculations.length === 0 ? emptyState("No calculations yet", "Create the first calculation to see saved work, output evidence, and sharing controls.", `<button class="button primary" data-open-new-calculation>New calculation</button>`) : ""}
     </section>`;
   setApp(shell(content, "dashboard"));
   bindShell();
+  document.querySelectorAll<HTMLButtonElement>("[data-open-new-calculation]").forEach(button => button.addEventListener("click", openNewCalculationModal));
   document.querySelectorAll<HTMLButtonElement>("[data-run]").forEach(button => button.addEventListener("click", async () => {
     await api<Run>(`/api/calculations/${button.dataset.run}/runs`, { method: "POST" });
     await renderDashboard();
@@ -262,52 +350,6 @@ async function renderCalculationDetail(id: number): Promise<void> {
   document.querySelector<HTMLButtonElement>("[data-run]")?.addEventListener("click", async () => {
     await api<Run>(`/api/calculations/${id}/runs`, { method: "POST" });
     await renderCalculationDetail(id);
-  });
-}
-
-async function renderNewCalculation(): Promise<void> {
-  const content = html`
-    <div class="page-head"><div><h1>New Calculation</h1><p>Create a governed external asset calculation with versioned inputs.</p></div></div>
-    <section class="panel"><div class="panel-head"><h2>Calculation setup</h2><span class="pill">Placeholder model</span></div>
-      <div class="panel-body">
-        <form id="calc-form" class="form-grid">
-          <div class="field"><label>Name</label><input name="name" value="Alpha Credit Base" required></div>
-          <div class="field"><label>Asset identifier</label><input name="identifier" value="CUSIP 123456AB" required></div>
-          <div class="field"><label>Asset name</label><input name="assetName" value="Alpha Credit" required></div>
-          <div class="field"><label>Asset value</label><input name="asset_value" type="number" value="84200000" required></div>
-          <div class="field"><label>Balance</label><input name="balance" type="number" value="76000000" required></div>
-          <div class="field"><label>Price</label><input name="price" type="number" value="98.625" step="0.001" required></div>
-          <div class="field"><label>Spread bps</label><input name="spread_bps" type="number" value="245" required></div>
-          <div class="field"><label>Rate percent</label><input name="rate_percent" type="number" value="6.4" step="0.01" required></div>
-          <div class="field"><label>Capital allocation</label><input name="capital_allocation" type="number" value="11400000" required></div>
-          <div class="field"><label>Tax jurisdiction</label><input name="tax_jurisdiction" value="DEFAULT"></div>
-          <div style="grid-column:1 / -1"><button class="button primary" type="submit">Create calculation</button></div>
-        </form>
-      </div>
-    </section>`;
-  setApp(shell(content, "calculation-new"));
-  bindShell();
-  document.querySelector<HTMLFormElement>("#calc-form")?.addEventListener("submit", async event => {
-    event.preventDefault();
-    const f = new FormData(event.currentTarget as HTMLFormElement);
-    const created = await api<Calculation>("/api/calculations", {
-      method: "POST",
-      body: JSON.stringify({
-        name: f.get("name"),
-        description: "Created from the local MVP form.",
-        asset: { identifier: f.get("identifier"), name: f.get("assetName"), identifier_type: "CUSIP", asset_type: "External Asset" },
-        input_payload: {
-          asset_value: Number(f.get("asset_value")),
-          balance: Number(f.get("balance")),
-          price: Number(f.get("price")),
-          spread_bps: Number(f.get("spread_bps")),
-          rate_percent: Number(f.get("rate_percent")),
-          capital_allocation: Number(f.get("capital_allocation")),
-          tax_jurisdiction: String(f.get("tax_jurisdiction") ?? "DEFAULT"),
-        },
-      }),
-    });
-    await renderCalculationDetail(created.id);
   });
 }
 
@@ -446,7 +488,6 @@ async function render(): Promise<void> {
     return;
   }
   if (route === "dashboard") await renderDashboard();
-  else if (route === "calculation-new") await renderNewCalculation();
   else if (route === "admin") await renderAdmin();
   else if (route === "parameters") await renderParameters();
   else if (route === "sharing") await renderSharing();

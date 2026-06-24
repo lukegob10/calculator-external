@@ -45,6 +45,11 @@ Status after the second implementation pass:
 - Add run history drawer and warnings panel.
 - Add scenario placeholder route and comparison table.
 
+Status after the deal-workspace UX pass:
+
+- Done: New Calculation moved out of standalone navigation and into a Deals pop-out with the full current input parameter set.
+- Remaining: edit existing calculation inputs in a pop-out and create new input versions from that edit workflow.
+
 ### Slice C - Parameter Governance
 
 - Admin draft parameter editor.
